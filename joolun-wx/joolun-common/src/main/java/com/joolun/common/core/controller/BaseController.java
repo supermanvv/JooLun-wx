@@ -4,7 +4,9 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import com.joolun.common.core.domain.model.LoginUser;
 import com.joolun.common.exception.DemoModeException;
 import com.joolun.common.utils.SecurityUtils;
 import com.joolun.common.utils.ServletUtils;
@@ -104,9 +106,9 @@ public class BaseController
     @ModelAttribute
     public void init(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException
     {
-//        Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
-//        if(SecurityUtils.isAdmin(userId)){//管理员直接放行
-//            return;
+//        LoginUser loginUser = SecurityUtils.getLoginUser();
+//        if(Objects.isNull(loginUser) || SecurityUtils.isAdmin(loginUser.getUser().getUserId())){//管理员直接放行
+            return;
 //        }
 //        String url = ServletUtils.getRequest().getRequestURI();
 //
@@ -122,6 +124,5 @@ public class BaseController
 //        {
 //            throw new DemoModeException();
 //        }
-        return;
     }
 }
