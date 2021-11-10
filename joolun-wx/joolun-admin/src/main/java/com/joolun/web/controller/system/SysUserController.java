@@ -5,14 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.joolun.common.annotation.Log;
 import com.joolun.common.constant.UserConstants;
@@ -56,13 +49,15 @@ public class SysUserController extends BaseController
     /**
      * 获取用户列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(SysUser user)
+//    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @PostMapping("/list")
+    public AjaxResult list(SysUser user)
     {
         startPage();
         List<SysUser> list = userService.selectUserList(user);
-        return getDataTable(list);
+        AjaxResult ajax = new AjaxResult(200, "OK",list);
+//        ajax.put("list", list);
+        return ajax;
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
@@ -98,7 +93,7 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:query')")
+//    @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = { "/", "/{userId}" })
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
@@ -118,9 +113,9 @@ public class SysUserController extends BaseController
     /**
      * 新增用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:add')")
+//    @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/add")
     public AjaxResult add(@Validated @RequestBody SysUser user)
     {
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user.getUserName())))
@@ -137,7 +132,8 @@ public class SysUserController extends BaseController
         {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
-        user.setCreateBy(SecurityUtils.getUsername());
+//        user.setCreateBy(SecurityUtils.getUsername());
+        user.setCreateBy("系統");
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         return toAjax(userService.insertUser(user));
     }
@@ -145,9 +141,9 @@ public class SysUserController extends BaseController
     /**
      * 修改用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/edit")
     public AjaxResult edit(@Validated @RequestBody SysUser user)
     {
         userService.checkUserAllowed(user);
@@ -161,19 +157,21 @@ public class SysUserController extends BaseController
         {
             return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
-        user.setUpdateBy(SecurityUtils.getUsername());
+//        user.setUpdateBy(SecurityUtils.getUsername());
+        user.setUpdateBy("系統");
         return toAjax(userService.updateUser(user));
     }
 
     /**
      * 删除用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userIds}")
-    public AjaxResult remove(@PathVariable Long[] userIds)
+    @PostMapping("/remove")
+    public AjaxResult remove(@RequestParam String userId)
     {
-        return toAjax(userService.deleteUserByIds(userIds));
+//        return toAjax(userService.deleteUserByIds(userIds));
+        return toAjax(userService.deleteUserById(Long.parseLong(userId)));
     }
 
     /**

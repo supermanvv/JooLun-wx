@@ -104,23 +104,24 @@ public class BaseController
     @ModelAttribute
     public void init(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException
     {
-        Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
-        if(SecurityUtils.isAdmin(userId)){//管理员直接放行
-            return;
-        }
-        String url = ServletUtils.getRequest().getRequestURI();
-
-        // 需要放开的url
-        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
-        {
-            return;
-        }
-
-        // 增删改 请求
-        if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())
-                || "PUT".equals(httpServletRequest.getMethod()))
-        {
-            throw new DemoModeException();
-        }
+//        Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
+//        if(SecurityUtils.isAdmin(userId)){//管理员直接放行
+//            return;
+//        }
+//        String url = ServletUtils.getRequest().getRequestURI();
+//
+//        // 需要放开的url
+//        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
+//        {
+//            return;
+//        }
+//
+//        // 增删改 请求
+//        if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())
+//                || "PUT".equals(httpServletRequest.getMethod()))
+//        {
+//            throw new DemoModeException();
+//        }
+        return;
     }
 }
