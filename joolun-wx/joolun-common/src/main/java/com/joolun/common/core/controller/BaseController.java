@@ -4,9 +4,7 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-import com.joolun.common.core.domain.model.LoginUser;
 import com.joolun.common.exception.DemoModeException;
 import com.joolun.common.utils.SecurityUtils;
 import com.joolun.common.utils.ServletUtils;
@@ -31,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * web层通用数据处理
- * 
+ *
  * @author ruoyi
  */
 public class BaseController
@@ -86,7 +84,7 @@ public class BaseController
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param rows 影响行数
      * @return 操作结果
      */
@@ -106,23 +104,23 @@ public class BaseController
     @ModelAttribute
     public void init(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException
     {
-//        LoginUser loginUser = SecurityUtils.getLoginUser();
-//        if(Objects.isNull(loginUser) || SecurityUtils.isAdmin(loginUser.getUser().getUserId())){//管理员直接放行
+        Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
+        if(SecurityUtils.isAdmin(userId)){//管理员直接放行
             return;
-//        }
-//        String url = ServletUtils.getRequest().getRequestURI();
-//
-//        // 需要放开的url
-//        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
-//        {
-//            return;
-//        }
-//
-//        // 增删改 请求
-//        if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())
-//                || "PUT".equals(httpServletRequest.getMethod()))
-//        {
-//            throw new DemoModeException();
-//        }
+        }
+        String url = ServletUtils.getRequest().getRequestURI();
+
+        // 需要放开的url
+        if (StringUtils.isNotEmpty(url) && (url.contains("/demo") || url.contains("/tool/gen")))
+        {
+            return;
+        }
+
+        // 增删改 请求
+        if ("DELETE".equals(httpServletRequest.getMethod()) || "POST".equals(httpServletRequest.getMethod())
+                || "PUT".equals(httpServletRequest.getMethod()))
+        {
+            throw new DemoModeException();
+        }
     }
 }
