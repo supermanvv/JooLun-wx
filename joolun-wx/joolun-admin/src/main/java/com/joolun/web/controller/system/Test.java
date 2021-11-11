@@ -1,6 +1,6 @@
 package com.joolun.web.controller.system;
 
-public class test {
+public class Test {
     /**
      * 用户名
      */
