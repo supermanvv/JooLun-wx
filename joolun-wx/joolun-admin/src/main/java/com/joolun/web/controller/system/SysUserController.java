@@ -2,6 +2,7 @@ package com.joolun.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -54,10 +55,9 @@ public class SysUserController extends BaseController
     public AjaxResult list(SysUser user)
     {
         startPage();
+        //列表查询
         List<SysUser> list = userService.selectUserList(user);
-        AjaxResult ajax = new AjaxResult(200, "OK",list);
-//        ajax.put("list", list);
-        return ajax;
+        return new AjaxResult(200, "OK",list);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
