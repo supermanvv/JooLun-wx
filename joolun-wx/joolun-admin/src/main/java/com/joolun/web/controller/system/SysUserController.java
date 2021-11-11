@@ -55,6 +55,7 @@ public class SysUserController extends BaseController
     public AjaxResult list(SysUser user)
     {
         startPage();
+        //列表查询
         List<SysUser> list = userService.selectUserList(user);
         return new AjaxResult(200, "OK",list);
     }
