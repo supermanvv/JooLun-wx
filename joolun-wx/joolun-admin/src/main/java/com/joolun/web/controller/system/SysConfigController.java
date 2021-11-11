@@ -43,8 +43,6 @@ public class SysConfigController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysConfig config)
     {
-
-
         startPage();
         List<SysConfig> list = configService.selectConfigList(config);
         return getDataTable(list);
