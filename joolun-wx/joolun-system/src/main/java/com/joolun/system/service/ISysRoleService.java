@@ -106,6 +106,14 @@ public interface ISysRoleService
     public int updateRoleStatus(SysRole role);
 
     /**
+     * 修改角色名和key
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int updateRoleNameAndKey(SysRole role);
+
+    /**
      * 修改数据权限信息
      * 
      * @param role 角色信息

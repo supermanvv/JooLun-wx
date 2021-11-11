@@ -138,6 +138,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateRoleStatus" parameterType="com.joolun.common.core.domain.entity.SysRole">
  		update sys_user set status = #{status} where user_id = #{userId}
 	</update>
+
+	<update id="updateRoleNameAndKey" parameterType="com.joolun.common.core.domain.entity.SysRole">
+		update sys_role set role_Name = #{roleName}, role_Key = #{roleKey}, update_time = sysdate() where role_id = #{roleId}
+	</update>
 	
 	<delete id="deleteRoleById" parameterType="java.lang.Long">
  		delete from sys_role where role_id = #{roleId}

@@ -1,10 +1,7 @@
 package com.joolun.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -218,6 +215,18 @@ public class SysRoleServiceImpl implements ISysRoleService
     }
 
     /**
+     * 修改角色状态
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int updateRoleNameAndKey(SysRole role)
+    {
+        return roleMapper.updateRoleNameAndKey(role);
+    }
+
+    /**
      * 修改数据权限信息
      * 
      * @param role 角色信息
@@ -245,12 +254,15 @@ public class SysRoleServiceImpl implements ISysRoleService
         int rows = 1;
         // 新增用户与角色管理
         List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
-        for (Long menuId : role.getMenuIds())
-        {
-            SysRoleMenu rm = new SysRoleMenu();
-            rm.setRoleId(role.getRoleId());
-            rm.setMenuId(menuId);
-            list.add(rm);
+        Long[] menuIds = role.getMenuIds();
+        if(Objects.nonNull(menuIds)) {
+            for (Long menuId : menuIds)
+            {
+                SysRoleMenu rm = new SysRoleMenu();
+                rm.setRoleId(role.getRoleId());
+                rm.setMenuId(menuId);
+                list.add(rm);
+            }
         }
         if (list.size() > 0)
         {
